@@ -28,7 +28,7 @@ const EditorMenuBar = ({ editor }) => {
   };
 
   const buttonClass = (active) =>
-    `p-2.5 rounded-lg transition-all duration-200 ${
+    `p-2.5 rounded-lg cursor-pointer transition-all duration-200 ${
       active
         ? "bg-indigo-100 text-indigo-700 shadow-sm"
         : "text-gray-600 hover:text-indigo-600 hover:bg-indigo-50"

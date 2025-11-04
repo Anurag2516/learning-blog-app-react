@@ -5,8 +5,9 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { Link as LinkExtension } from "@tiptap/extension-link";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import MenuBar from "./EditorMenuBar";
+import { forwardRef, useImperativeHandle } from "react";
 
-const Editor = ({ content, onChange }) => {
+const Editor = forwardRef(({ content, onChange }, ref) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -18,6 +19,12 @@ const Editor = ({ content, onChange }) => {
     content: content || "",
     onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
   });
+
+  useImperativeHandle(ref, () => ({
+    clearContent: () => {
+      editor?.commands.clearContent();
+    },
+  }));
 
   return (
     <div className="bg-white rounded-2xl shadow-xl border overflow-hidden w-full">
@@ -53,6 +60,6 @@ const Editor = ({ content, onChange }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Editor;
