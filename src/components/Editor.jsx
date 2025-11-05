@@ -24,6 +24,9 @@ const Editor = forwardRef(({ content, onChange }, ref) => {
     clearContent: () => {
       editor?.commands.clearContent();
     },
+    setContent: (newContent) => {
+      editor?.commands.setContent(newContent);
+    },
   }));
 
   return (

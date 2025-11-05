@@ -39,24 +39,28 @@ const EditorMenuBar = ({ editor }) => {
       <div className="flex flex-wrap gap-1">
         <div className="flex gap-1">
           <button
+            type="button"
             className={buttonClass(editor.isActive("bold"))}
             onClick={() => editor.chain().focus().toggleBold().run()}
           >
             <Bold size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("italic"))}
             onClick={() => editor.chain().focus().toggleItalic().run()}
           >
             <Italic size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("underline"))}
             onClick={() => editor.chain().focus().toggleUnderline().run()}
           >
             <Underline size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("strike"))}
             onClick={() => editor.chain().focus().toggleStrike().run()}
           >
@@ -68,6 +72,7 @@ const EditorMenuBar = ({ editor }) => {
 
         <div className="flex gap-1">
           <button
+            type="button"
             className={buttonClass(editor.isActive("heading", { level: 1 }))}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -76,6 +81,7 @@ const EditorMenuBar = ({ editor }) => {
             <Heading1 size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("heading", { level: 2 }))}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
@@ -84,6 +90,7 @@ const EditorMenuBar = ({ editor }) => {
             <Heading2 size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("heading", { level: 3 }))}
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 3 }).run()
@@ -97,18 +104,21 @@ const EditorMenuBar = ({ editor }) => {
 
         <div className="flex gap-1">
           <button
+            type="button"
             className={buttonClass(editor.isActive({ textAlign: "left" }))}
             onClick={() => editor.chain().focus().setTextAlign("left").run()}
           >
             <AlignLeft size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive({ textAlign: "center" }))}
             onClick={() => editor.chain().focus().setTextAlign("center").run()}
           >
             <AlignCenter size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive({ textAlign: "right" }))}
             onClick={() => editor.chain().focus().setTextAlign("right").run()}
           >
@@ -120,12 +130,14 @@ const EditorMenuBar = ({ editor }) => {
 
         <div className="flex gap-1">
           <button
+            type="button"
             className={buttonClass(editor.isActive("bulletList"))}
             onClick={() => editor.chain().focus().toggleBulletList().run()}
           >
             <List size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("orderedList"))}
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
           >
@@ -137,24 +149,28 @@ const EditorMenuBar = ({ editor }) => {
 
         <div className="flex gap-1">
           <button
+            type="button"
             className={buttonClass(editor.isActive("blockquote"))}
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
           >
             <Quote size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("code"))}
             onClick={() => editor.chain().focus().toggleCode().run()}
           >
             <Code size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("codeBlock"))}
             onClick={() => editor.chain().focus().toggleCodeBlock().run()}
           >
             <Code2 size={18} />
           </button>
           <button
+            type="button"
             className={buttonClass(editor.isActive("link"))}
             onClick={addLink}
           >
@@ -166,6 +182,7 @@ const EditorMenuBar = ({ editor }) => {
 
         <div className="flex gap-1">
           <button
+            type="button"
             disabled={!editor.can().undo()}
             onClick={() => editor.chain().focus().undo().run()}
             className={`p-2.5 rounded-lg ${
@@ -177,6 +194,7 @@ const EditorMenuBar = ({ editor }) => {
             <Undo size={18} />
           </button>
           <button
+            type="button"
             disabled={!editor.can().redo()}
             onClick={() => editor.chain().focus().redo().run()}
             className={`p-2.5 rounded-lg ${
