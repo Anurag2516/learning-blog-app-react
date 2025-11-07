@@ -18,12 +18,7 @@ export const useTags = () => {
       setTags((prev) => [...prev, newTag]);
       setTag("");
       setIsTagVisible(true);
-      return;
     }
-  };
-
-  const tagVisible = (idx) => {
-    setTags((prev) => prev.filter((_, i) => i !== idx));
   };
 
   return {
@@ -35,6 +30,5 @@ export const useTags = () => {
     setIsTagVisible,
     isTagInputValid,
     createTags,
-    tagVisible,
   };
 };

@@ -1,13 +1,21 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocalStorage } from "./useLocalStorage";
+import { useBlogs } from "../context/BlogContext";
+import { useParams } from "react-router-dom";
 
-export const useBlogForm = (tags, setTag, setTags, setIsTagVisible) => {
+export const useBlogForm = (
+  tags = [],
+  setTag = () => {},
+  setTags = () => {},
+  setIsTagVisible = () => {}
+) => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [content, setContent] = useState("");
-  const [blogs, setBlogs] = useLocalStorage("blogsList", []);
+  const { blogs, setBlogs } = useBlogs();
   const [error, setError] = useState({});
   const [editingId, setEditingId] = useState(null);
+
+  const { blogId } = useParams();
 
   const editorRef = useRef(null);
 
@@ -25,7 +33,6 @@ export const useBlogForm = (tags, setTag, setTags, setIsTagVisible) => {
           ? "Enter the blog content first"
           : "",
     });
-    return;
   };
 
   const createBlogs = () => {
@@ -37,12 +44,10 @@ export const useBlogForm = (tags, setTag, setTags, setIsTagVisible) => {
         title,
         subtitle,
         content,
-        tags,
+        tags: tags || [],
       };
       setBlogs((prev) => [...prev, newBlog]);
       emptyForm();
-
-      return;
     }
   };
 
@@ -73,7 +78,11 @@ export const useBlogForm = (tags, setTag, setTags, setIsTagVisible) => {
     editorRef.current?.clearContent();
   };
 
-  const handleEdit = (blog) => {
+  useEffect(() => {
+    if (!blogId) return;
+
+    const blog = blogs.find((blog) => blog.id === blogId);
+    if (!blog) return;
     setTitle(blog.title);
     setSubtitle(blog.subtitle);
     setContent(blog.content);
@@ -84,7 +93,7 @@ export const useBlogForm = (tags, setTag, setTags, setIsTagVisible) => {
     setEditingId(blog.id);
 
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, [blogId]);
 
   const handleCancelEdit = () => {
     emptyForm();
@@ -121,11 +130,9 @@ export const useBlogForm = (tags, setTag, setTags, setIsTagVisible) => {
     error,
     setError,
     editingId,
-    handleEdit,
     isFormValid,
     createBlogs,
     updateBlogs,
-    handleEdit,
     handleCancelEdit,
     editorRef,
     emptyForm,
