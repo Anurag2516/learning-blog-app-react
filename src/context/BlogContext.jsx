@@ -1,10 +1,11 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const BlogsContext = createContext();
 
 export const BlogsProvider = ({ children }) => {
   const [blogs, setBlogs] = useLocalStorage("blogsList", []);
+  const [notification, setNotification] = useState("");
 
   useEffect(() => {
     const handleStorageChange = (e) => {
@@ -23,8 +24,19 @@ export const BlogsProvider = ({ children }) => {
     };
   }, [setBlogs]);
 
+  useEffect(() => {
+    if (!notification && notification === "") return;
+    const notificationTimer = setTimeout(() => {
+      setNotification("");
+    }, 2000);
+
+    return () => clearTimeout(notificationTimer);
+  }, [notification]);
+
   return (
-    <BlogsContext.Provider value={{ blogs, setBlogs }}>
+    <BlogsContext.Provider
+      value={{ blogs, setBlogs, notification, setNotification }}
+    >
       {children}
     </BlogsContext.Provider>
   );

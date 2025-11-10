@@ -35,7 +35,7 @@ const EditorMenuBar = ({ editor }) => {
     }`;
 
   return (
-    <div className="border-b border-gray-200 bg-linear-to-r from-gray-50 to-white px-4 py-3">
+    <div className="border-b border-gray-200 rounded-lg bg-linear-to-r from-gray-50 to-white px-4 py-3">
       <div className="flex flex-wrap gap-1">
         <div className="flex gap-1">
           <button

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useBlogs } from "../context/BlogContext";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const useBlogForm = (
   tags = [],
@@ -11,27 +11,33 @@ export const useBlogForm = (
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [content, setContent] = useState("");
-  const { blogs, setBlogs } = useBlogs();
+  const { blogs, setBlogs, notification, setNotification } = useBlogs();
   const [error, setError] = useState({});
   const [editingId, setEditingId] = useState(null);
 
-  const { blogId } = useParams();
+  const navigate = useNavigate();
+
+  const { editBlogId } = useParams();
 
   const editorRef = useRef(null);
 
+  const isHtmlEmpty = (html) => {
+    const text = html
+      .replace(/<br\s*\/?>/gi, "")
+      .replace(/<[^>]*>/g, "")
+      .trim();
+
+    return text === "";
+  };
+
   const isFormValid = () => {
-    return (
-      title.trim() !== "" && content.trim() !== "" && content !== "<p></p>"
-    );
+    return title.trim() !== "" && !isHtmlEmpty(content);
   };
 
   const formError = () => {
     setError({
       title: !title.trim() ? "Enter the title first" : "",
-      content:
-        !content.trim() && content !== "<p></p>"
-          ? "Enter the blog content first"
-          : "",
+      content: isHtmlEmpty(content) ? "Enter the blog content first" : "",
     });
   };
 
@@ -45,8 +51,10 @@ export const useBlogForm = (
         subtitle,
         content,
         tags: tags || [],
+        createdAt: new Date().toISOString(),
       };
       setBlogs((prev) => [...prev, newBlog]);
+      setNotification("Blog Published Successfully!");
       emptyForm();
     }
   };
@@ -62,8 +70,10 @@ export const useBlogForm = (
             : blog;
         })
       );
+      setNotification("Blog Updated Successfully!");
       emptyForm();
       setEditingId(null);
+      navigate("/");
     }
   };
 
@@ -79,9 +89,9 @@ export const useBlogForm = (
   };
 
   useEffect(() => {
-    if (!blogId) return;
+    if (!editBlogId) return;
 
-    const blog = blogs.find((blog) => blog.id === blogId);
+    const blog = blogs.find((blog) => blog.id === editBlogId);
     if (!blog) return;
     setTitle(blog.title);
     setSubtitle(blog.subtitle);
@@ -93,30 +103,32 @@ export const useBlogForm = (
     setEditingId(blog.id);
 
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [blogId]);
+  }, [editBlogId]);
 
   const handleCancelEdit = () => {
-    emptyForm();
     setEditingId(null);
+    navigate("/");
   };
 
   useEffect(() => {
-    {
-      if (error.title) {
-        const titleTimer = setTimeout(() => {
-          setError((prev) => ({ ...prev, title: "" }));
-        }, 2000);
-        return () => clearTimeout(titleTimer);
-      }
+    if (!error.title) return;
 
-      if (error.content) {
-        const contentTimer = setTimeout(() => {
-          setError((prev) => ({ ...prev, content: "" }));
-        }, 2000);
-        return () => clearTimeout(contentTimer);
-      }
-    }
-  }, [error.title, error.content]);
+    const timer = setTimeout(() => {
+      setError((prev) => ({ ...prev, title: "" }));
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [error.title]);
+
+  useEffect(() => {
+    if (!error.content) return;
+
+    const timer = setTimeout(() => {
+      setError((prev) => ({ ...prev, content: "" }));
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [error.content]);
 
   return {
     title,
@@ -136,5 +148,7 @@ export const useBlogForm = (
     handleCancelEdit,
     editorRef,
     emptyForm,
+    notification,
+    setNotification,
   };
 };

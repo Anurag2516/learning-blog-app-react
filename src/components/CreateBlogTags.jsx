@@ -8,33 +8,21 @@ const CreateBlogTags = ({
   isTagVisible,
   isTagInputValid,
   createTags,
-  editingId,
-  handleCancelEdit,
-  isFormValid,
-  updateBlogs,
-  emptyForm,
 }) => {
   return (
     <>
-      <div className="flex flex-col items-start gap-4 border-2 border-black rounded p-6 mr-4 lg:w-[30%] h-fit">
+      <div className="flex flex-col items-start gap-4 w-full md:w-2xl">
         <div className="flex flex-col items-start gap-5 w-full">
-          <div className="flex w-full justify-between pr-2">
-            <h1 className="font-bold text-2xl">
-              Tags
-              <span className="font-normal text-lg mx-2">(optional)</span>
-            </h1>
-            <button
-              type="button"
-              className="cursor-pointer"
-              title="Reset Field"
-              onClick={() => setTags([])}
-            >
-              <RotateCw size={20} />
-            </button>
-          </div>
+          <h1 className="font-semibold text-xl md:text-2xl text-slate-700">
+            Tags
+            <span className="font-normal text-lg italic text-slate-500 mx-2">
+              (optional)
+            </span>
+          </h1>
+
           <div className="flex gap-3 w-full">
             <input
-              className="border-2 border-black rounded-lg p-2 w-[80%]"
+              className="border-2 shadow-lg text-slate-900 rounded-lg py-2 md:py-3 px-2 w-full md:w-[70%] border-slate-300 focus:border-emerald-500 focus:outline-none transition-all"
               type="text"
               placeholder="Enter tags"
               value={tag}
@@ -42,10 +30,10 @@ const CreateBlogTags = ({
             />
             <button
               disabled={!isTagInputValid()}
-              className={`p-2 border-2 border-black rounded w-[20%] ${
+              className={`px-2 rounded font-semibold text-base md:text-lg text-white ${
                 isTagInputValid()
-                  ? "bg-emerald-400 cursor-pointer hover:bg-emerald-300 transition-all"
-                  : "bg-emerald-200 cursor-not-allowed"
+                  ? "bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-all"
+                  : "bg-emerald-400 cursor-not-allowed"
               }`}
               onClick={createTags}
               onKeyDown={(e) => {
@@ -61,9 +49,9 @@ const CreateBlogTags = ({
             {tags.map((elem, idx) => (
               <div
                 key={elem.id}
-                className="py-1 px-2 border-2 rounded-2xl bg-teal-300 "
+                className="py-1 px-2 shadow-lg rounded-2xl bg-emerald-100"
               >
-                <span className="flex gap-3 items-center justify-between font-bold text-lg text-black ">
+                <span className="flex gap-3 items-center justify-between font-bold text-lg text-emerald-700 ">
                   {elem.tag}
                   <CircleX
                     className="cursor-pointer"
@@ -78,49 +66,6 @@ const CreateBlogTags = ({
             ))}
           </div>
         )}
-
-        <div className="flex flex-wrap gap-3 ">
-          {editingId ? (
-            <div className="flex gap-4 ">
-              <button
-                type="submit"
-                onClick={updateBlogs}
-                className={`p-2 border-2 border-black rounded mt-8 ${
-                  isFormValid()
-                    ? "bg-emerald-400 cursor-pointer hover:bg-emerald-300 transition-all"
-                    : "bg-emerald-200 cursor-not-allowed"
-                }`}
-              >
-                Update Blog
-              </button>
-              <button
-                type="submit"
-                onClick={handleCancelEdit}
-                className="p-2 border-2 border-black rounded mt-8 bg-blue-400 cursor-pointer hover:bg-blue-500 transition-all"
-              >
-                Cancel Edit
-              </button>
-            </div>
-          ) : (
-            <button
-              type="submit"
-              className={`p-2 border-2 border-black rounded mt-8 ${
-                isFormValid()
-                  ? "bg-emerald-400 cursor-pointer hover:bg-emerald-300 transition-all"
-                  : "bg-emerald-200 cursor-not-allowed"
-              }`}
-            >
-              Publish Blog
-            </button>
-          )}
-          <button
-            type="reset"
-            className="p-2 border-2 border-black rounded mt-8 bg-red-500 cursor-pointer hover:bg-red-600 transition-all"
-            onClick={emptyForm}
-          >
-            Reset Form
-          </button>
-        </div>
       </div>
     </>
   );

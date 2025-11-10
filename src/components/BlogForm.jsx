@@ -1,9 +1,7 @@
-import { RotateCw } from "lucide-react";
 import Editor from "./Editor";
 import { useBlogForm } from "../hooks/useBlogForm";
 import { useTags } from "../hooks/useTags";
 import CreateBlogTags from "./CreateBlogTags";
-import { useParams } from "react-router-dom";
 
 export default function BlogForm() {
   const tagsState = useTags();
@@ -26,113 +24,138 @@ export default function BlogForm() {
     setError,
     createBlogs,
     editorRef,
+    editingId,
+    handleCancelEdit,
+    isFormValid,
+    updateBlogs,
+    emptyForm,
+    notification,
+    setNotification,
   } = blogFormState;
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row justify-center items-start w-full py-4 px-6 bg-slate-100">
+      {notification && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-green-400 px-4 py-4 rounded shadow-lg z-50">
+          {notification}
+        </div>
+      )}
+      <div className="py-24 md:py-28 px-10 lg:px-0 bg-slate-50">
         <form
-          className="flex w-full gap-2 bg-white"
+          className="flex flex-col items-start gap-10 py-12 px-6 md:px-12 max-w-5xl mx-auto shadow-lg bg-white rounded-lg"
           onSubmit={(e) => {
             e.preventDefault();
             createBlogs();
           }}
         >
-          <div className="lg:w-[70%]">
-            <div className="flex flex-col items-start gap-8 border-2 border-black rounded py-6 px-8 w-full">
-              <div className="flex flex-col items-start gap-3 w-full">
-                <div className="flex w-full justify-between">
-                  <h1 className="font-bold text-2xl">Title</h1>
-                  <button
-                    type="button"
-                    className="cursor-pointer"
-                    title="Reset Field"
-                    onClick={() => setTitle("")}
-                  >
-                    <RotateCw size={20} />
-                  </button>
-                </div>
-                <input
-                  className="border-2 border-black rounded-lg px-2 py-3 w-full"
-                  type="text"
-                  id="title"
-                  name="title"
-                  placeholder="Enter blog title"
-                  value={title}
-                  onChange={(event) => {
-                    setTitle(event.target.value);
-                    if (error.title)
-                      setError((prev) => ({ ...prev, title: "" }));
-                  }}
-                />
+          <div className="flex flex-col items-start gap-3 w-full">
+            <h1 className="font-semibold text-xl md:text-2xl text-slate-700">
+              Title <span className="text-lg md:text-xl">*</span>
+            </h1>
 
-                {error.title && (
-                  <span className="bg-red-500 text-sm p-2 text- border-2 border-black rounded">
-                    {error.title}
-                  </span>
-                )}
-              </div>
+            <input
+              className="px-2 py-3 w-full border-2 rounded-lg shadow-lg text-slate-900 border-slate-300 focus:border-emerald-500 focus:outline-none transition-all"
+              type="text"
+              id="title"
+              name="title"
+              placeholder="Enter blog title"
+              value={title}
+              onChange={(event) => {
+                setTitle(event.target.value);
+                if (error.title) setError((prev) => ({ ...prev, title: "" }));
+              }}
+            />
 
-              <div className="flex flex-col items-start gap-2 w-full">
-                <div className="flex gap-2 w-full justify-between">
-                  <h1 className="font-bold text-2xl">
-                    Subtitle
-                    <span className="font-normal text-lg mx-2">(optional)</span>
-                  </h1>
-                  <button
-                    type="button"
-                    className="cursor-pointer"
-                    title="Reset Field"
-                    onClick={() => setSubtitle("")}
-                  >
-                    <RotateCw size={20} />
-                  </button>
-                </div>
-                <input
-                  className="border-2 border-black rounded-lg px-2 py-3 w-full"
-                  type="text"
-                  id="subtitle"
-                  name="subtitle"
-                  placeholder="Enter subtitle"
-                  value={subtitle}
-                  onChange={(event) => setSubtitle(event.target.value)}
-                />
-              </div>
-              <div className="flex flex-col items-start gap-2 w-full">
-                <div className="flex gap-2 w-full justify-between">
-                  <h1 className="font-bold text-2xl">Blog Content</h1>
-                  <button
-                    type="button"
-                    className="cursor-pointer"
-                    title="Reset Field"
-                    onClick={() => {
-                      setContent("");
-                      editorRef.current?.clearContent();
-                    }}
-                  >
-                    <RotateCw size={20} />
-                  </button>
-                </div>
-                <Editor
-                  content={content}
-                  ref={editorRef}
-                  onChange={(newContent) => {
-                    setContent(newContent);
-                    if (error.content)
-                      setError((prev) => ({ ...prev, content: "" }));
-                  }}
-                />
+            {error.title && (
+              <span className="text-red-500 text-base">{error.title}</span>
+            )}
+          </div>
 
-                {error.content && (
-                  <span className="bg-red-500 text-sm p-2 text- border-2 border-black rounded">
-                    {error.content}
-                  </span>
-                )}
-              </div>
-            </div>
+          <div className="flex flex-col items-start gap-2 w-full">
+            <h1 className="font-semibold text-xl md:text-2xl text-slate-700">
+              Subtitle
+              <span className="font-normal text-lg italic text-slate-500 mx-2">
+                (optional)
+              </span>
+            </h1>
+
+            <input
+              className="border-2 rounded-lg px-2 py-3 shadow-lg w-full text-slate-900 border-slate-300 focus:border-emerald-500 focus:outline-none transition-all"
+              type="text"
+              id="subtitle"
+              name="subtitle"
+              placeholder="Enter subtitle"
+              value={subtitle}
+              onChange={(event) => setSubtitle(event.target.value)}
+            />
+          </div>
+          <div className="flex flex-col items-start gap-2 w-full">
+            <h1 className="font-semibold text-xl md:text-2xl text-slate-700">
+              Blog Content <span className="text-lg md:text-xl">*</span>
+            </h1>
+
+            <Editor
+              content={content}
+              ref={editorRef}
+              onChange={(newContent) => {
+                setContent(newContent);
+                if (error.content)
+                  setError((prev) => ({ ...prev, content: "" }));
+              }}
+            />
+
+            {error.content && (
+              <span className="text-red-500 text-base ">{error.content}</span>
+            )}
           </div>
 
           <CreateBlogTags {...tagsState} {...blogFormState} />
+
+          <div className="flex flex-wrap justify-center md:justify-between gap-2 w-full my-8">
+            <button
+              type="reset"
+              className="p-2 rounded mt-8 font-semibold text-white text-base md:text-lg bg-red-500 cursor-pointer hover:bg-red-600 transition-all"
+              onClick={() => {
+                emptyForm();
+                setNotification("Form Reset Successfully!");
+              }}
+            >
+              Reset Form
+            </button>
+            {editingId ? (
+              <div className="flex flex-wrap justify-center gap-2 md:gap-4 ">
+                <button
+                  type="submit"
+                  onClick={handleCancelEdit}
+                  className="p-2 rounded mt-8 font-semibold text-base md:text-lg text-white bg-blue-400 cursor-pointer hover:bg-blue-500 transition-all"
+                >
+                  Cancel Edit
+                </button>
+                <button
+                  type="submit"
+                  onClick={updateBlogs}
+                  className={`p-2 rounded mt-8 font-semibold text-base md:text-lg text-white ${
+                    isFormValid()
+                      ? "bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-all"
+                      : "bg-emerald-400 cursor-not-allowed"
+                  }`}
+                >
+                  Update Blog
+                </button>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className={`p-2 rounded mt-8 font-semibold text-base md:text-lg text-white ${
+                  isFormValid()
+                    ? "bg-emerald-500 cursor-pointer hover:bg-emerald-600 transition-all"
+                    : "bg-emerald-400 cursor-not-allowed"
+                }`}
+              >
+                Publish Blog
+              </button>
+            )}
+          </div>
         </form>
       </div>
     </>
