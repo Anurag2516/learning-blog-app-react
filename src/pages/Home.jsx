@@ -61,11 +61,9 @@ const Home = () => {
                     {blog.subtitle}
                   </p>
                 )}
-                <p className="text-slate-600 font-normal text-sm mt-1 mb-2">
+                <p className="text-slate-500 font-semibold text-sm mt-1 mb-2">
                   Created At:
-                  <span className="text-sm">
-                    {formatDateTime(blog.createdAt)}
-                  </span>
+                  {formatDateTime(blog.createdAt)}
                 </p>
               </div>
               <div className="mb-3 flex flex-col gap-1 mt-6">
