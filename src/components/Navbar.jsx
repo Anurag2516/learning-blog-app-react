@@ -15,7 +15,7 @@ const Navbar = () => {
     <>
       <div className="flex items-center justify-between fixed w-full z-50 py-4 px-8 md:px-16 lg:px-32 bg-slate-900 text-white shadow-lg">
         <h1 className="font-semibold text-xl md:text-3xl bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-          blogIt
+          blogVerse
         </h1>
 
         <div className="flex items-center gap-6">
