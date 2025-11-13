@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ export const useLogin = () => {
 
       if (Array.isArray(userFound) && userFound.length > 0) {
         setCurrentUser(userFound);
+        toast.success(`Welcome back, ${userFound[0].username}!`);
         navigate("/", { replace: true });
       } else {
         setUserNotFound(true);

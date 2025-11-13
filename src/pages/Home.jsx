@@ -4,10 +4,11 @@ import { useBlogs } from "../context/BlogContext";
 import { useEffect, useRef, useState } from "react";
 import { formatDateTime } from "../utils/formatDateTime";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { blogs, setBlogs, notification, setNotification } = useBlogs();
+  const { blogs, setBlogs } = useBlogs();
   const { currentUser } = useAuth();
   const [isBtnClicked, setIsBtnClicked] = useState(null);
 
@@ -31,16 +32,11 @@ const Home = () => {
 
   const handleDeleteBlog = (id) => {
     setBlogs((prev) => prev.filter((i) => i.id !== id));
-    setNotification("Blog Deleted Successfully!");
+    toast.success("Blog Deleted Successfully!");
   };
 
   return (
     <>
-      {notification && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-green-400 px-4 py-4 rounded shadow-lg z-50">
-          {notification}
-        </div>
-      )}
       <div
         className={`flex flex-col items-center gap-14 py-32 px-6 lg:px-36 md:px-12 bg-slate-50 ${
           userBlogs.length === 0 ? "h-screen" : "h-auto"

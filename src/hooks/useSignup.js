@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { formatDateTime } from "../utils/formatDateTime";
+import toast from "react-hot-toast";
 
 export const useSignup = () => {
   const navigate = useNavigate();
@@ -59,6 +59,7 @@ export const useSignup = () => {
       };
       setUsers((prev) => [...prev, newUser]);
       setCurrentUser([newUser]);
+      toast.success(`Account created! Welcome, ${newUser.username}!`);
       navigate("/");
     } else return;
   };

@@ -2,6 +2,7 @@ import Editor from "./Editor";
 import { useBlogForm } from "../hooks/useBlogForm";
 import { useTags } from "../hooks/useTags";
 import CreateBlogTags from "./CreateBlogTags";
+import toast from "react-hot-toast";
 
 export default function BlogForm() {
   const tagsState = useTags();
@@ -29,17 +30,10 @@ export default function BlogForm() {
     isFormValid,
     updateBlogs,
     emptyForm,
-    notification,
-    setNotification,
   } = blogFormState;
 
   return (
     <>
-      {notification && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-green-400 px-4 py-4 rounded shadow-lg z-50">
-          {notification}
-        </div>
-      )}
       <div className="py-24 md:py-28 px-10 lg:px-0 bg-slate-50">
         <form
           className="flex flex-col items-start gap-10 py-12 px-6 md:px-12 max-w-5xl mx-auto shadow-lg bg-white rounded-lg"
@@ -117,7 +111,7 @@ export default function BlogForm() {
               className="p-2 rounded mt-8 font-semibold text-white text-base md:text-lg bg-red-500 cursor-pointer hover:bg-red-600 transition-all"
               onClick={() => {
                 emptyForm();
-                setNotification("Form Reset Successfully!");
+                toast.success("Form Reset Successfully!");
               }}
             >
               Reset Form

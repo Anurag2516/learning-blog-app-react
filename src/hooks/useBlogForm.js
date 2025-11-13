@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useBlogs } from "../context/BlogContext";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export const useBlogForm = (
   tags = [],
@@ -12,7 +13,7 @@ export const useBlogForm = (
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [content, setContent] = useState("");
-  const { blogs, setBlogs, notification, setNotification } = useBlogs();
+  const { blogs, setBlogs } = useBlogs();
   const { currentUser } = useAuth();
   const [error, setError] = useState({});
   const [editingId, setEditingId] = useState(null);
@@ -57,7 +58,7 @@ export const useBlogForm = (
         createdAt: new Date().toISOString(),
       };
       setBlogs((prev) => [...prev, newBlog]);
-      setNotification("Blog Published Successfully!");
+      toast.success("Blog Published Successfully!");
       emptyForm();
     }
   };
@@ -73,7 +74,7 @@ export const useBlogForm = (
             : blog;
         })
       );
-      setNotification("Blog Updated Successfully!");
+      toast.success("Blog Updated Successfully!");
       emptyForm();
       setEditingId(null);
       navigate("/");
@@ -131,7 +132,5 @@ export const useBlogForm = (
     handleCancelEdit,
     editorRef,
     emptyForm,
-    notification,
-    setNotification,
   };
 };

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { formatDateTime } from "../utils/formatDateTime";
 import { Mail, UserRound } from "lucide-react";
+import toast from "react-hot-toast";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Profile = () => {
     setBlogs(newBlogs);
 
     setCurrentUser([]);
+    toast.success("Account deleted successfully!");
     navigate("/signup", { replace: true });
   };
 

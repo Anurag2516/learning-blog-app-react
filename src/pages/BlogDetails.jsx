@@ -3,13 +3,14 @@ import { useBlogs } from "../context/BlogContext";
 import { ArrowLeft, EllipsisVertical, FilePenLine, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { formatDateTime } from "../utils/formatDateTime";
+import toast from "react-hot-toast";
 
 const BlogDetails = () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 
   const { blogDetailsId } = useParams();
   const navigate = useNavigate();
-  const { blogs, setBlogs, notification, setNotification } = useBlogs();
+  const { blogs, setBlogs } = useBlogs();
 
   const blog = blogs.find((blog) => blog.id === blogDetailsId);
 
@@ -30,7 +31,7 @@ const BlogDetails = () => {
 
   const handleDeleteBlog = (id) => {
     setBlogs((prev) => prev.filter((i) => i.id !== id));
-    setNotification("Blog Deleted Successfully!");
+    toast.success("Blog Deleted Successfully!");
     navigate("/");
   };
 
@@ -38,11 +39,6 @@ const BlogDetails = () => {
 
   return (
     <>
-      {notification && (
-        <div className="fixed top-20 left-1/2 -translate-x-1/2 bg-green-500 px-4 py-4 rounded shadow-lg z-50">
-          {notification}
-        </div>
-      )}
       <div className="py-28 px-10 lg:px-0 bg-slate-50">
         <div className="max-w-4xl mx-auto">
           <div className="flex md:hidden justify-between items-center md:px-14 mb-6">
