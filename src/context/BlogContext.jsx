@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { useBlogStorage } from "../hooks/useBlogStorage";
 
 const BlogsContext = createContext();
 
 export const BlogsProvider = ({ children }) => {
-  const [blogs, setBlogs] = useLocalStorage("blogsList", []);
+  const [blogs, setBlogs] = useBlogStorage("blogsList", []);
   const [notification, setNotification] = useState("");
 
   useEffect(() => {

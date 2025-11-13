@@ -54,7 +54,7 @@ export default function BlogForm() {
             </h1>
 
             <input
-              className="px-2 py-3 w-full border-2 rounded-lg shadow-lg text-slate-900 border-slate-300 focus:border-emerald-500 focus:outline-none transition-all"
+              className="px-4 py-3 shadow-lg w-full text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
               type="text"
               id="title"
               name="title"
@@ -80,7 +80,7 @@ export default function BlogForm() {
             </h1>
 
             <input
-              className="border-2 rounded-lg px-2 py-3 shadow-lg w-full text-slate-900 border-slate-300 focus:border-emerald-500 focus:outline-none transition-all"
+              className="px-4 py-3 shadow-lg w-full text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
               type="text"
               id="subtitle"
               name="subtitle"

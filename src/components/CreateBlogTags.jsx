@@ -1,4 +1,4 @@
-import { CircleX, RotateCw } from "lucide-react";
+import { CircleX } from "lucide-react";
 
 const CreateBlogTags = ({
   tag,
@@ -22,7 +22,7 @@ const CreateBlogTags = ({
 
           <div className="flex gap-3 w-full">
             <input
-              className="border-2 shadow-lg text-slate-900 rounded-lg py-2 md:py-3 px-2 w-full md:w-[70%] border-slate-300 focus:border-emerald-500 focus:outline-none transition-all"
+              className="px-4 py-3 shadow-lg w-full text-slate-900 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent outline-none transition"
               type="text"
               placeholder="Enter tags"
               value={tag}

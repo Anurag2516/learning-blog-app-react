@@ -1,14 +1,22 @@
 import { EllipsisVertical, FilePenLine, Trash2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useBlogs } from "../context/BlogContext";
 import { useEffect, useRef, useState } from "react";
 import { formatDateTime } from "../utils/formatDateTime";
+import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
+  const navigate = useNavigate();
   const { blogs, setBlogs, notification, setNotification } = useBlogs();
+  const { currentUser } = useAuth();
   const [isBtnClicked, setIsBtnClicked] = useState(null);
 
   const dropdownRef = useRef(null);
+
+  const userBlogs =
+    currentUser && currentUser.length > 0
+      ? blogs.filter((i) => i.userId === currentUser[0].userId)
+      : [];
 
   useEffect(() => {
     const handleClickedOutside = (event) => {
@@ -35,19 +43,28 @@ const Home = () => {
       )}
       <div
         className={`flex flex-col items-center gap-14 py-32 px-6 lg:px-36 md:px-12 bg-slate-50 ${
-          blogs.length === 0 ? "h-screen" : "h-auto"
+          userBlogs.length === 0 ? "h-screen" : "h-auto"
         }`}
       >
         <h1 className="font-bold text-4xl text-slate-900">My Blogs:</h1>
 
-        {blogs.length === 0 ? (
-          <div className="flex items-center justify-center py-6 rounded-lg w-[500px] h-[200px]">
+        {userBlogs.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-6 rounded-lg w-[500px] h-[200px] gap-4">
             <h2 className="font-bold text-slate-400 text-2xl">
               No Blogs Available...
             </h2>
+            <p className="text-slate-500 text-base">
+              Start sharing your thoughts with the world
+            </p>
+            <button
+              className="px-6 py-2.5 rounded-lg text-white text-sm md:text-lg font-medium cursor-pointer bg-emerald-500 hover:bg-emerald-600 transition-all shadow-md hover:shadow-lg"
+              onClick={() => navigate("/create-blogs")}
+            >
+              Create Blog
+            </button>
           </div>
         ) : (
-          blogs.map((blog) => (
+          userBlogs.map((blog) => (
             <div
               key={blog.id}
               className="flex flex-col items-start gap-2 w-full border border-slate-200 bg-white rounded-lg shadow-lg py-8 px-5 lg:px-10 hovr:shadow-xl transition-shadow duration-300 hover:border-emerald-300"

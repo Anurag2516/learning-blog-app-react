@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useBlogs } from "../context/BlogContext";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export const useBlogForm = (
   tags = [],
@@ -12,6 +13,7 @@ export const useBlogForm = (
   const [subtitle, setSubtitle] = useState("");
   const [content, setContent] = useState("");
   const { blogs, setBlogs, notification, setNotification } = useBlogs();
+  const { currentUser } = useAuth();
   const [error, setError] = useState({});
   const [editingId, setEditingId] = useState(null);
 
@@ -46,6 +48,7 @@ export const useBlogForm = (
       formError();
     } else {
       const newBlog = {
+        userId: currentUser[0].userId,
         id: crypto.randomUUID(),
         title,
         subtitle,
@@ -109,26 +112,6 @@ export const useBlogForm = (
     setEditingId(null);
     navigate("/");
   };
-
-  useEffect(() => {
-    if (!error.title) return;
-
-    const timer = setTimeout(() => {
-      setError((prev) => ({ ...prev, title: "" }));
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [error.title]);
-
-  useEffect(() => {
-    if (!error.content) return;
-
-    const timer = setTimeout(() => {
-      setError((prev) => ({ ...prev, content: "" }));
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [error.content]);
 
   return {
     title,

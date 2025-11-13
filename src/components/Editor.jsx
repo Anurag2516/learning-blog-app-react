@@ -10,10 +10,13 @@ import { forwardRef, useImperativeHandle } from "react";
 const Editor = forwardRef(({ content, onChange }, ref) => {
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        underline: false,
+        link: false,
+      }),
       UnderlineExtension,
-      TextAlign.configure({ types: ["heading", "paragraph"] }),
       LinkExtension.configure({ openOnClick: false }),
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       Placeholder.configure({ placeholder: "Start writing your blog post..." }),
     ],
     content: content || "",
